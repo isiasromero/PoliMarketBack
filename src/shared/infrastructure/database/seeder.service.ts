@@ -77,9 +77,9 @@ export class SeederService implements OnModuleInit {
   /**
    * Seeds three demo products: Laptop, Mouse, and Keyboard.
    * Each product is assigned to its primary supplier for auto-restocking:
-   * - Laptop → TechSupply Corp (supplier ID 1)
-   * - Mouse → GlobalParts Ltd (supplier ID 2)
-   * - Keyboard → TechSupply Corp (supplier ID 1)
+   * - Laptop -> TechSupply Corp (supplier ID 1)
+   * - Mouse -> GlobalParts Ltd (supplier ID 2)
+   * - Keyboard -> TechSupply Corp (supplier ID 1)
    * @private
    */
   private async seedProducts(): Promise<void> {
