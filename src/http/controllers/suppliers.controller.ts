@@ -175,6 +175,33 @@ export class SuppliersController {
   }
 
   /**
+   * Updates an existing purchase order.
+   *
+   * Delegates to {@link LogisticaFacade.actualizarOrdenCompra} and returns
+   * the updated PurchaseOrder entity on success.
+   *
+   * @param id - Path parameter identifying the purchase order to update
+   * @param dto - Body payload containing supplierId and detail line items
+   * @returns The updated PurchaseOrder entity.
+   */
+  @Patch('purchase-orders/:id')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: 'Update an existing purchase order' })
+  @ApiParam({ name: 'id', type: Number, description: 'Purchase order ID' })
+  @ApiResponse({
+    status: 200,
+    description: 'Purchase order updated successfully.',
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'Validation error, order not found, or order already received.',
+  })
+  async updatePurchaseOrder(@Param('id', ParseIntPipe) id: number, @Body() dto: CreatePurchaseOrderDto) {
+    const result = await this.logisticaFacade.actualizarOrdenCompra(id, dto);
+    return unwrapResult(result);
+  }
+
+  /**
    * Registers the reception of a purchase order.
    *
    * Transitions the purchase order to a received state and updates

@@ -80,4 +80,26 @@ export class TypeOrmStockProductRepository implements IStockProductRepository {
       .getMany();
     return ormEntities.map(StockProductMapper.toDomain);
   }
+
+  /**
+   * Finds all stock records for a given product across all warehouses.
+   * @param productId - The product ID to filter by
+   * @returns An array of StockProduct domain entities for the specified product
+   */
+  async findByProductId(productId: number): Promise<StockProduct[]> {
+    const ormEntities = await this.ormRepository.find({
+      where: { productId },
+    });
+    return ormEntities.map(StockProductMapper.toDomain);
+  }
+
+  /**
+   * Deletes a stock product record by its ID.
+   * @param id - The stock product ID to delete
+   * @returns true if deletion was successful, false if not found
+   */
+  async delete(id: number): Promise<boolean> {
+    const result = await this.ormRepository.delete({ id });
+    return result.affected ? result.affected > 0 : false;
+  }
 }

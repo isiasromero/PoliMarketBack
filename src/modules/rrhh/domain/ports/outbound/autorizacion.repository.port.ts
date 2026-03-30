@@ -26,6 +26,12 @@ export interface IAuthorizationRepository {
   findById(id: number): Promise<Authorization | null>;
 
   /**
+   * Finds all authorizations in the system.
+   * @returns An array of all authorizations
+   */
+  findAll(): Promise<Authorization[]>;
+
+  /**
    * Finds all authorizations associated with a given seller.
    * @param sellerId - The ID of the seller to search authorizations for
    * @returns An array of authorizations belonging to the seller

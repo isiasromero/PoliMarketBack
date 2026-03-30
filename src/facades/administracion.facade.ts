@@ -7,6 +7,7 @@ import {
 } from '../modules/rrhh/application/use-cases/autorizar-vendedor.use-case';
 import { RevokeAuthorizationUseCase } from '../modules/rrhh/application/use-cases/revocar-autorizacion.use-case';
 import { GetAuthorizationsUseCase } from '../modules/rrhh/application/use-cases/consultar-autorizaciones.use-case';
+import { ObtenerTodasAutorizacionesUseCase } from '../modules/rrhh/application/use-cases/obtener-todas-autorizaciones.use-case';
 import {
   ValidateAccessUseCase,
   ValidateAccessInput,
@@ -24,6 +25,7 @@ export class AdministracionFacade {
     private readonly authorizeSellerUseCase: AuthorizeSellerUseCase,
     private readonly revokeAuthorizationUseCase: RevokeAuthorizationUseCase,
     private readonly getAuthorizationsUseCase: GetAuthorizationsUseCase,
+    private readonly obtenerTodasAutorizacionesUseCase: ObtenerTodasAutorizacionesUseCase,
     private readonly validateAccessUseCase: ValidateAccessUseCase,
     private readonly obtenerVendedoresUseCase: ObtenerVendedoresUseCase,
   ) {}
@@ -45,6 +47,14 @@ export class AdministracionFacade {
    */
   async revokeAuthorization(id: number): Promise<Result<void>> {
     return this.revokeAuthorizationUseCase.execute(id);
+  }
+
+  /**
+   * Retrieves all authorizations in the system.
+   * @returns An array of all Authorization entities (both active and revoked)
+   */
+  async getAllAuthorizations(): Promise<Authorization[]> {
+    return this.obtenerTodasAutorizacionesUseCase.execute();
   }
 
   /**

@@ -84,6 +84,25 @@ export class AdminController {
   }
 
   /**
+   * Retrieves all authorizations in the system.
+   *
+   * Delegates to {@link AdministracionFacade.getAllAuthorizations} which
+   * returns all active and revoked authorizations.
+   *
+   * @returns An array of all Authorization entities.
+   */
+  @Get('authorizations')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: 'Get all authorizations in the system' })
+  @ApiResponse({
+    status: 200,
+    description: 'List of all authorizations returned successfully.',
+  })
+  async getAllAuthorizations() {
+    return this.administracionFacade.getAllAuthorizations();
+  }
+
+  /**
    * Retrieves all authorizations for a given seller.
    *
    * Delegates to {@link AdministracionFacade.getAuthorizations} which

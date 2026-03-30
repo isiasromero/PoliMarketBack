@@ -16,6 +16,7 @@ import { PURCHASE_ORDER_REPOSITORY_TOKEN } from './domain/ports/outbound/orden-c
 
 // Use cases
 import { GeneratePurchaseOrderUseCase } from './application/use-cases/generar-orden-compra.use-case';
+import { ActualizarOrdenCompraUseCase } from './application/use-cases/actualizar-orden-compra.use-case';
 import { RegisterReceptionUseCase } from './application/use-cases/registrar-recepcion.use-case';
 import { GetSuppliersUseCase } from './application/use-cases/consultar-proveedores.use-case';
 import { CreateSupplierUseCase } from './application/use-cases/crear-proveedor.use-case';
@@ -50,6 +51,7 @@ import { EliminarOrdenCompraUseCase } from './application/use-cases/eliminar-ord
 
     // Use cases
     GeneratePurchaseOrderUseCase,
+    ActualizarOrdenCompraUseCase,
     RegisterReceptionUseCase,
     GetSuppliersUseCase,
     CreateSupplierUseCase,
@@ -63,6 +65,7 @@ import { EliminarOrdenCompraUseCase } from './application/use-cases/eliminar-ord
     SUPPLIER_REPOSITORY_TOKEN,
     PURCHASE_ORDER_REPOSITORY_TOKEN,
     GeneratePurchaseOrderUseCase,
+    ActualizarOrdenCompraUseCase,
     RegisterReceptionUseCase,
     GetSuppliersUseCase,
     CreateSupplierUseCase,

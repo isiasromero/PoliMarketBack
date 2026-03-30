@@ -52,4 +52,18 @@ export interface IStockProductRepository {
    * @returns An array of StockProduct entities that need restocking
    */
   findBelowMinimum(): Promise<StockProduct[]>;
+
+  /**
+   * Finds all stock records for a given product.
+   * @param productId - The product ID to filter by
+   * @returns An array of StockProduct entities for the specified product
+   */
+  findByProductId(productId: number): Promise<StockProduct[]>;
+
+  /**
+   * Deletes a stock product record by its ID.
+   * @param id - The stock product ID to delete
+   * @returns true if deletion was successful, false if not found
+   */
+  delete(id: number): Promise<boolean>;
 }

@@ -5,6 +5,14 @@ import {
   IStockProductRepository,
   STOCK_PRODUCT_REPOSITORY_TOKEN,
 } from '../../domain/ports/outbound/stock-producto.repository.port';
+import {
+  IProductRepository,
+  PRODUCT_REPOSITORY_TOKEN,
+} from '../../domain/ports/outbound/producto.repository.port';
+import {
+  IWarehouseRepository,
+  WAREHOUSE_REPOSITORY_TOKEN,
+} from '../../domain/ports/outbound/bodega.repository.port';
 
 /**
  * Use case for registering a stock entry (incoming inventory).
@@ -17,6 +25,10 @@ export class RegisterEntryUseCase {
   constructor(
     @Inject(STOCK_PRODUCT_REPOSITORY_TOKEN)
     private readonly stockProductRepository: IStockProductRepository,
+    @Inject(PRODUCT_REPOSITORY_TOKEN)
+    private readonly productRepository: IProductRepository,
+    @Inject(WAREHOUSE_REPOSITORY_TOKEN)
+    private readonly warehouseRepository: IWarehouseRepository,
   ) {}
 
   /**
@@ -34,6 +46,18 @@ export class RegisterEntryUseCase {
   ): Promise<Result<StockProduct>> {
     if (quantity <= 0) {
       return err('Entry quantity must be a positive number');
+    }
+
+    // Validar que el producto existe
+    const product = await this.productRepository.findById(productId);
+    if (!product) {
+      return err(`Product with ID ${productId} not found`);
+    }
+
+    // Validar que la bodega existe
+    const warehouse = await this.warehouseRepository.findById(warehouseId);
+    if (!warehouse) {
+      return err(`Warehouse with ID ${warehouseId} not found`);
     }
 
     let stockProduct =

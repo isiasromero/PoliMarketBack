@@ -17,6 +17,7 @@ import { AUTHORIZATION_REPOSITORY_TOKEN } from './domain/ports/outbound/autoriza
 import { AuthorizeSellerUseCase } from './application/use-cases/autorizar-vendedor.use-case';
 import { RevokeAuthorizationUseCase } from './application/use-cases/revocar-autorizacion.use-case';
 import { GetAuthorizationsUseCase } from './application/use-cases/consultar-autorizaciones.use-case';
+import { ObtenerTodasAutorizacionesUseCase } from './application/use-cases/obtener-todas-autorizaciones.use-case';
 import { ValidateAccessUseCase } from './application/use-cases/validar-acceso.use-case';
 
 /**
@@ -42,6 +43,7 @@ import { ValidateAccessUseCase } from './application/use-cases/validar-acceso.us
     AuthorizeSellerUseCase,
     RevokeAuthorizationUseCase,
     GetAuthorizationsUseCase,
+    ObtenerTodasAutorizacionesUseCase,
     ValidateAccessUseCase,
   ],
   exports: [
@@ -51,6 +53,7 @@ import { ValidateAccessUseCase } from './application/use-cases/validar-acceso.us
     AuthorizeSellerUseCase,
     RevokeAuthorizationUseCase,
     GetAuthorizationsUseCase,
+    ObtenerTodasAutorizacionesUseCase,
     ValidateAccessUseCase,
   ],
 })

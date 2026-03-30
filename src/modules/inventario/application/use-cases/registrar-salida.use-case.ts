@@ -6,6 +6,14 @@ import {
   IStockProductRepository,
   STOCK_PRODUCT_REPOSITORY_TOKEN,
 } from '../../domain/ports/outbound/stock-producto.repository.port';
+import {
+  IProductRepository,
+  PRODUCT_REPOSITORY_TOKEN,
+} from '../../domain/ports/outbound/producto.repository.port';
+import {
+  IWarehouseRepository,
+  WAREHOUSE_REPOSITORY_TOKEN,
+} from '../../domain/ports/outbound/bodega.repository.port';
 import { AutoGeneratePurchaseOrderUseCase } from './auto-generar-orden-compra.use-case';
 
 /**
@@ -30,6 +38,10 @@ export class RegisterExitUseCase {
   constructor(
     @Inject(STOCK_PRODUCT_REPOSITORY_TOKEN)
     private readonly stockProductRepository: IStockProductRepository,
+    @Inject(PRODUCT_REPOSITORY_TOKEN)
+    private readonly productRepository: IProductRepository,
+    @Inject(WAREHOUSE_REPOSITORY_TOKEN)
+    private readonly warehouseRepository: IWarehouseRepository,
     private readonly autoGeneratePurchaseOrderUseCase: AutoGeneratePurchaseOrderUseCase,
     private readonly transactionService: TransactionService,
   ) {}
@@ -54,6 +66,18 @@ export class RegisterExitUseCase {
       return err('Exit quantity must be a positive number');
     }
 
+    // VALIDACIÓN 2: Verificar que el producto existe
+    const product = await this.productRepository.findById(productId);
+    if (!product) {
+      return err(`Product with ID ${productId} not found`);
+    }
+
+    // VALIDACIÓN 3: Verificar que la bodega existe
+    const warehouse = await this.warehouseRepository.findById(warehouseId);
+    if (!warehouse) {
+      return err(`Warehouse with ID ${warehouseId} not found`);
+    }
+
     // BÚSQUEDA: Obtener el registro de stock del producto en la bodega
     const stockProduct =
       await this.stockProductRepository.findByProductAndWarehouse(
@@ -67,7 +91,7 @@ export class RegisterExitUseCase {
       );
     }
 
-    // VALIDACIÓN 2: Verificar que hay stock suficiente
+    // VALIDACIÓN 4: Verificar que hay stock suficiente
     if (stockProduct.availableQuantity < quantity) {
       return err(
         `Insufficient stock: available=${stockProduct.availableQuantity}, requested=${quantity}`,

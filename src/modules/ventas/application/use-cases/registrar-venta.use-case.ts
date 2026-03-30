@@ -92,7 +92,7 @@ export class RegisterSaleUseCase {
     // Esto implica que existe una autorización ACTIVA para acceder al sistema de ventas
     const authorization = await this.authorizationRepository.findActiveBySellerAndSystem(
       input.sellerId,
-      'SALES',
+      'VENTAS',
     );
 
     if (!authorization) {

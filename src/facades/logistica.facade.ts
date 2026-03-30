@@ -9,6 +9,10 @@ import {
   GeneratePurchaseOrderInput,
 } from '../modules/proveedores/application/use-cases/generar-orden-compra.use-case';
 import {
+  ActualizarOrdenCompraUseCase,
+  UpdatePurchaseOrderInput,
+} from '../modules/proveedores/application/use-cases/actualizar-orden-compra.use-case';
+import {
   RegisterReceptionUseCase,
   RegisterReceptionInput,
 } from '../modules/proveedores/application/use-cases/registrar-recepcion.use-case';
@@ -53,6 +57,7 @@ import { ObtenerStockUseCase } from '../modules/inventario/application/use-cases
 export class LogisticaFacade {
   constructor(
     private readonly generatePurchaseOrderUseCase: GeneratePurchaseOrderUseCase,
+    private readonly actualizarOrdenCompraUseCase: ActualizarOrdenCompraUseCase,
     private readonly registerReceptionUseCase: RegisterReceptionUseCase,
     private readonly getSuppliersUseCase: GetSuppliersUseCase,
     private readonly getPurchaseOrdersUseCase: GetPurchaseOrdersUseCase,
@@ -82,6 +87,18 @@ export class LogisticaFacade {
    */
   async generatePurchaseOrder(dto: GeneratePurchaseOrderInput): Promise<Result<PurchaseOrder>> {
     return this.generatePurchaseOrderUseCase.execute(dto);
+  }
+
+  /**
+   * Updates an existing purchase order.
+   * @param orderId - The ID of the purchase order to update
+   * @param dto - Input containing supplierId and updated detail line items
+   * @returns A Result containing the updated PurchaseOrder on success,
+   *          or an error message if validation fails or order is already received
+   */
+  async actualizarOrdenCompra(orderId: number, dto: GeneratePurchaseOrderInput): Promise<Result<PurchaseOrder>> {
+    const input: UpdatePurchaseOrderInput = { orderId, ...dto };
+    return this.actualizarOrdenCompraUseCase.execute(input);
   }
 
   /**

@@ -39,6 +39,15 @@ export class TypeOrmAuthorizationRepository implements IAuthorizationRepository 
   }
 
   /**
+   * Finds all authorizations in the system.
+   * @returns An array of all authorization domain entities
+   */
+  async findAll(): Promise<Authorization[]> {
+    const orms = await this.ormRepository.find();
+    return orms.map(AuthorizationMapper.toDomain);
+  }
+
+  /**
    * Finds all authorizations for a given seller.
    * @param sellerId - The seller's unique identifier
    * @returns An array of authorization domain entities
