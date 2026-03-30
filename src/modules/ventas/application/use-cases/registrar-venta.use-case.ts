@@ -77,7 +77,21 @@ export class RegisterSaleUseCase {
       return err('A sale must have at least one detail line item');
     }
 
-    // VALIDACIÓN 2: Verificar que el vendedor exista en la base de datos
+    // VALIDACIÓN 2 (RF02): Verificar que quantity > 0 y unitPrice >= 0 para cada detalle
+    for (const detail of input.details) {
+      if (detail.quantity <= 0) {
+        return err(
+          `Invalid quantity for product ID ${detail.productId}: quantity must be greater than 0`,
+        );
+      }
+      if (detail.unitPrice < 0) {
+        return err(
+          `Invalid unit price for product ID ${detail.productId}: unit price must be greater than or equal to 0`,
+        );
+      }
+    }
+
+    // VALIDACIÓN 3: Verificar que el vendedor exista en la base de datos
     const seller = await this.sellerRepository.findById(input.sellerId);
     if (!seller) {
       return err(`Seller with ID ${input.sellerId} not found`);

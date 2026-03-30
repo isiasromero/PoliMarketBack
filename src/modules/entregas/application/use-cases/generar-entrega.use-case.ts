@@ -67,6 +67,21 @@ export class GenerateDeliveryUseCase {
       return err(`Sale with ID ${input.saleId} does not exist`);
     }
 
+    // VALIDACIÓN RF05: Verificar que la venta tenga estado CONFIRMED antes de generar entrega
+    if (sale.status !== 'CONFIRMED') {
+      return err(
+        `Cannot generate delivery: sale with ID ${input.saleId} has status '${sale.status}'. Only sales with status 'CONFIRMED' can generate deliveries.`,
+      );
+    }
+
+    // VALIDACIÓN RF05: Verificar que no exista una entrega previa para la misma venta (evitar duplicados)
+    const existingDeliveries = await this.deliveryRepository.findBySale(input.saleId);
+    if (existingDeliveries && existingDeliveries.length > 0) {
+      return err(
+        `Cannot generate delivery: sale with ID ${input.saleId} already has an existing delivery.`,
+      );
+    }
+
     // Validate that there is sufficient stock for each item
     for (const item of input.items) {
       const stockResult = await this.verifySufficientStockUseCase.execute(
